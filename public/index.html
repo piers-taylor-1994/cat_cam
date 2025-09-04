@@ -39,6 +39,7 @@
         #remoteVideo {
             width: 100%;
             height: auto;
+            transform: scaleX(2) scaleY(2);
         }
 
         #localVideo {
@@ -52,6 +53,12 @@
         @media screen and (max-width: 600px) {
             #localVideo {
                 display: block;
+            }
+
+            #remoteVideo {
+                width: 100%;
+                height: auto;
+                transform: scaleX(1) scaleY(1);
             }
         }
     </style>
