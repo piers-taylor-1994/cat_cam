@@ -1,4 +1,3 @@
-// public/main.js
 const socket = io();
 const localVideo = document.getElementById('localVideo');
 const remoteVideo = document.getElementById('remoteVideo');

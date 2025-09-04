@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raspberry Pi WebRTC</title>
     <style>
-        body { font-family: sans-serif; background: #2c3e50; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #video-container { display: flex; gap: 20px; }
-        video { border: 2px solid #3498db; border-radius: 8px; width: 40vw; max-width: 600px; background: black; }
-        #localVideo { transform: scaleX(-1); } /* Mirror local video */
+        
     </style>
 </head>
 <body>
@@ -21,3 +18,29 @@
     <script src="main.js"></script>
 </body>
 </html>
+<style>
+    body { 
+        font-family: sans-serif; background: #2c3e50; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; 
+    }
+
+    #video-container { 
+        position: relative; 
+    }
+
+    video { 
+        border: 2px solid #3498db; border-radius: 8px; width: 40vw; max-width: 600px; background: black; 
+    }
+    
+    #localVideo { 
+        transform: scaleX(-1);
+        height: 30%;
+        width: 30%;
+        position: absolute;
+        top: 33.7em;
+        left: -30.5em; 
+    }
+
+    #remoteVideo { 
+        transform: scaleX(2) scaleY(2);
+    }
+</style>
