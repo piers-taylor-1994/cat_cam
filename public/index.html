@@ -19,40 +19,43 @@
 
         #video-container {
             position: relative;
-            width: 90vw;
-            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 9em;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+        }
+
+        video {
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            width: 40vw;
+            max-width: 600px;
+            background: black;
         }
 
         #remoteVideo {
             width: 100%;
             height: auto;
-            border: 2px solid #3498db;
-            border-radius: 8px;
-            background: black;
-            transform: scaleX(1);
+            transform: scaleY(2) scaleX(2);
         }
 
         #localVideo {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 25%;
-            height: auto;
-            border: 2px solid #e67e22;
-            border-radius: 8px;
+            height: 7em;
+            width: 7em;
+            border-color: #e67e22;
             transform: scaleX(-1);
-            background: black;
-            z-index: 10;
         }
 
-        /* Mobile tweaks */
-        @media screen and (max-width: 600px) {
+        /* @media screen and (max-width: 600px) {
             #localVideo {
                 width: 35%;
                 bottom: 5px;
                 right: 5px;
             }
-        }
+        } */
     </style>
 </head>
 
