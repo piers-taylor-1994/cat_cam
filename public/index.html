@@ -39,7 +39,6 @@
         #remoteVideo {
             width: 100%;
             height: auto;
-            transform: scaleY(2) scaleX(2);
         }
 
         #localVideo {
@@ -61,8 +60,8 @@
 
 <body>
     <div id="video-container">
-        <video id="localVideo" autoplay playsinline muted></video>
         <video id="remoteVideo" autoplay playsinline muted></video>
+        <video id="localVideo" autoplay playsinline muted></video>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="main.js"></script>
