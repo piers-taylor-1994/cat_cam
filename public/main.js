@@ -6,6 +6,10 @@ let localStream;
 let peerConnection;
 let isInitiator = false;
 
+let access1 = process.env.ACCESS_1
+console.log(access1)
+localStorage.setItem("access_token", access1)
+
 // We'll use a public STUN server from Google
 const stunServers = {
     iceServers: [
