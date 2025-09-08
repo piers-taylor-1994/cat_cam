@@ -11,7 +11,6 @@ let localStream;
 let peerConnection;
 let isInitiator = false;
 
-// We'll use a public STUN server from Google
 const stunServers = {
     iceServers: [
         { urls: 'stun:stun.l.google.com:19302' }
@@ -82,6 +81,15 @@ socket.on('ice-candidate', (candidate) => {
     console.log('Received ICE candidate.');
     const iceCandidate = new RTCIceCandidate(candidate);
     peerConnection.addIceCandidate(iceCandidate);
+});
+
+socket.on("connect_error", (err) => {
+  if (err.message === "Unauthorised") {
+    console.warn("Redirecting to unauthorised page...");
+    window.location.href = "/unauthorised.html";
+  } else {
+    console.error("Connection error:", err.message);
+  }
 });
 
 // --- WebRTC Logic ---

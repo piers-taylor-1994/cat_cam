@@ -21,8 +21,8 @@ io.use((socket, next) => {
   if (allowedTokens.includes(token)) {
     return next();
   } else {
-    console.log(`❌ Unauthorized device: ${socket.id}`);
-    return next(new Error("Unauthorized"));
+    console.log(`❌ Unauthorised device: ${socket.id}`);
+    return next(new Error("Unauthorised"));
   }
 });
 
