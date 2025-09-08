@@ -1,14 +1,11 @@
 // server.js
 const express = require('express');
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const socketIo = require('socket.io');
 
 const app = express();
-const server = https.createServer({
-  key: fs.readFileSync('./ssl/key.pem'),
-  cert: fs.readFileSync('./ssl/cert.pem')
-}, app);
+const server = http.createServer(app);
 const io = socketIo(server);
 
 // Serve the static files from the 'public' directory
@@ -56,7 +53,7 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`🚀 Server is running on https://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
