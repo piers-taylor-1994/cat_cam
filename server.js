@@ -8,8 +8,23 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Serve the static files from the 'public' directory
 app.use(express.static('public'));
+
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  const allowedTokens = [
+    process.env.ACCESS_PI,
+    process.env.ACCESS_PHONE,
+    process.env.ACCESS_PARTNER
+  ];
+
+  if (allowedTokens.includes(token)) {
+    return next();
+  } else {
+    console.log(`❌ Unauthorized device: ${socket.id}`);
+    return next(new Error("Unauthorized"));
+  }
+});
 
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);

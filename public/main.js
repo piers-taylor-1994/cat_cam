@@ -1,14 +1,15 @@
-const socket = io();
+const socket = io({
+  auth: {
+    token: localStorage.getItem("access_token")
+  }
+});
+
 const localVideo = document.getElementById('localVideo');
 const remoteVideo = document.getElementById('remoteVideo');
 
 let localStream;
 let peerConnection;
 let isInitiator = false;
-
-let access1 = process.env.ACCESS_1
-console.log(access1)
-localStorage.setItem("access_token", access1)
 
 // We'll use a public STUN server from Google
 const stunServers = {
