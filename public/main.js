@@ -13,7 +13,12 @@ let isInitiator = false;
 
 const stunServers = {
     iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' }
+        { urls: 'stun:stun.l.google.com:19302' },
+        {
+            urls: "turn:standard.relay.metered.ca:80",
+            username: "e69b894a4951520dc2b83333",
+            credential: "Lp7vzxLpmjatqGO4",
+        },
     ]
 };
 
