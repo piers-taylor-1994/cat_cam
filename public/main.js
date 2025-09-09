@@ -1,7 +1,7 @@
 const socket = io({
-  auth: {
-    token: localStorage.getItem("access_token")
-  }
+    auth: {
+        token: localStorage.getItem("access_token")
+    }
 });
 
 const localVideo = document.getElementById('localVideo');
@@ -13,9 +13,29 @@ let isInitiator = false;
 
 const stunServers = {
     iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
+        { 
+            urls: "stun:stun.l.google.com:19302" 
+        },
+        {
+            urls: "stun:stun.relay.metered.ca:80",
+        },
         {
             urls: "turn:standard.relay.metered.ca:80",
+            username: "e69b894a4951520dc2b83333",
+            credential: "Lp7vzxLpmjatqGO4",
+        },
+        {
+            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+            username: "e69b894a4951520dc2b83333",
+            credential: "Lp7vzxLpmjatqGO4",
+        },
+        {
+            urls: "turn:standard.relay.metered.ca:443",
+            username: "e69b894a4951520dc2b83333",
+            credential: "Lp7vzxLpmjatqGO4",
+        },
+        {
+            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
             username: "e69b894a4951520dc2b83333",
             credential: "Lp7vzxLpmjatqGO4",
         },
@@ -89,12 +109,12 @@ socket.on('ice-candidate', (candidate) => {
 });
 
 socket.on("connect_error", (err) => {
-  if (err.message === "Unauthorised") {
-    console.warn("Redirecting to unauthorised page...");
-    window.location.href = "/unauthorised.html";
-  } else {
-    console.error("Connection error:", err.message);
-  }
+    if (err.message === "Unauthorised") {
+        console.warn("Redirecting to unauthorised page...");
+        window.location.href = "/unauthorised.html";
+    } else {
+        console.error("Connection error:", err.message);
+    }
 });
 
 // --- WebRTC Logic ---
