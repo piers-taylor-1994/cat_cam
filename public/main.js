@@ -39,7 +39,8 @@ const stunServers = {
             username: "e69b894a4951520dc2b83333",
             credential: "Lp7vzxLpmjatqGO4",
         },
-    ]
+    ],
+    iceTransportPolicy: "relay"
 };
 
 // We can join any room name. For simplicity, let's use a fixed one.
