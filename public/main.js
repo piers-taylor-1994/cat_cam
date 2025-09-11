@@ -13,8 +13,8 @@ let isInitiator = false;
 
 const stunServers = {
     iceServers: [
-        { 
-            urls: "stun:stun.l.google.com:19302" 
+        {
+            urls: "stun:stun.l.google.com:19302"
         },
         {
             urls: "stun:stun.relay.metered.ca:80",
@@ -42,23 +42,17 @@ const stunServers = {
     ]
 };
 
-// We can join any room name. For simplicity, let's use a fixed one.
 const roomName = 'pi-room';
 socket.emit('join room', roomName);
 
-// --- Signaling Event Handlers ---
-
-// Event: 'created' - Fired when I am the first person in the room.
 socket.on('created', () => {
     console.log('You created the room.');
     isInitiator = true;
 });
 
-// Event: 'joined' - Fired when I am the second person in the room.
 socket.on('joined', () => {
     console.log('You joined the room.');
-    // The second person to join will start the media stream.
-    // This triggers the 'offer' process.
+
     createPeerConnection();
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         .then(stream => {
@@ -69,7 +63,6 @@ socket.on('joined', () => {
         .catch(error => console.error('getUserMedia error:', error));
 });
 
-// Event: 'offer' - The initiator sends an offer.
 socket.on('offer', (offer) => {
     if (!isInitiator) {
         console.log('Received offer.');
@@ -82,7 +75,6 @@ socket.on('offer', (offer) => {
                 localVideo.srcObject = stream;
                 localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
 
-                // Create an answer and send it back
                 peerConnection.createAnswer()
                     .then(answer => {
                         peerConnection.setLocalDescription(answer);
@@ -95,13 +87,11 @@ socket.on('offer', (offer) => {
     }
 });
 
-// Event: 'answer' - The peer has answered our offer.
 socket.on('answer', (answer) => {
     console.log('Received answer.');
     peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
 });
 
-// Event: 'ice-candidate' - Received a network candidate from the peer.
 socket.on('ice-candidate', (candidate) => {
     console.log('Received ICE candidate.');
     const iceCandidate = new RTCIceCandidate(candidate);
@@ -117,18 +107,14 @@ socket.on("connect_error", (err) => {
     }
 });
 
-// --- WebRTC Logic ---
-
 function createPeerConnection() {
     peerConnection = new RTCPeerConnection(stunServers);
 
-    // Event handler for when a remote stream is added
     peerConnection.ontrack = (event) => {
         console.log('Remote stream added.');
         remoteVideo.srcObject = event.streams[0];
     };
 
-    // Event handler for when a new ICE candidate is found
     peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
             console.log('Sending ICE candidate.');
@@ -136,9 +122,16 @@ function createPeerConnection() {
         }
     };
 
-    // If we are the initiator, create and send an offer.
     if (isInitiator) {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                sampleRate: 48000,
+                channelCount: 1
+            }
+        })
             .then(stream => {
                 localStream = stream;
                 localVideo.srcObject = stream;
@@ -146,17 +139,25 @@ function createPeerConnection() {
 
                 peerConnection.createOffer()
                     .then(offer => {
+                        let sdp = offer.sdp;
+
+                        // Lower Opus bitrate to ~16kbps
+                        sdp = sdp.replace(/opus\/48000.*\r\n/g, match => {
+                            return match + "a=fmtp:111 maxaveragebitrate=16000;useinbandfec=1\r\n";
+                        });
+
+                        offer.sdp = sdp;
                         peerConnection.setLocalDescription(offer);
                         socket.emit('offer', offer, roomName);
-                        console.log('Sending offer.');
+                        console.log('Sending offer with reduced bitrate.');
                     })
                     .catch(error => console.error('createOffer error:', error));
+
             })
             .catch(error => console.error('getUserMedia error:', error));
     }
 }
 
-// Handle user leaving
 window.onbeforeunload = () => {
     socket.emit('leave room', roomName);
 };
