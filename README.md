@@ -25,14 +25,14 @@ cat_cam is a modular, peer-to-peer camera streaming service built for real-world
 
 ## Setup
 ```
-# 1. Clone the repo
+#1 Clone the repo
 git clone https://github.com/<your‑username>/cat_cam.git
 cd cat_cam
 
-# 2. Install dependencies
+#2 Install dependencies
 npm install
 
-# 3a. Create and set auth token variables in the service
+#3a Create and set auth token variables in the service
 // server.js
 const allowedTokens = [
     {AUTH_TOKEN_1},
@@ -40,13 +40,14 @@ const allowedTokens = [
     {AUTH_TOKEN_3}...
   ];
 
-#3b. Set auth token variables in device
+#3b Set auth token variables in device
+// In browser console
 javascript:(function(){localStorage.setItem("access_token", "{AUTH_TOKEN_1}");alert("Token set!");})(); 
 
-# 4. Run the app
+#4 Run the app
 npm run start
 
-#5. Navigate to the site provided in the console log (localhost:PORTNAME) on both devices 
+#5 Navigate to the site provided in the console log (localhost:PORTNAME) on both devices 
 ```
 
 ## Future scope
